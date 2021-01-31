@@ -32,18 +32,21 @@ def get_token():
 
 def get_last_music():
     page = requests.get(URL)
+    musics = []
 
     html_body = BeautifulSoup(page.content, "html.parser")
-    html_music = html_body.findAll(class_="ecfper-4 dswJZp")[0]
+    html_music = html_body.findAll(class_="ecfper-4 dswJZp")
 
-    title = html_music.find(class_="ecfper-5 cLjpFE").text
-    author = html_music.find(class_="ecfper-6 cLqSnv").text
+    for music in html_music:
+        title = music.find(class_="ecfper-5 cLjpFE").text
+        author = music.find(class_="ecfper-6 cLqSnv").text
+        musics.append(title + " " + author)
 
-    return type("obj", (object,), {"title": title, "author": author})()
+    return musics
 
 
 def get_track_id_spotify(music):
-    query = "q=" + music.title + " " + music.author + "&type=track"
+    query = "q=" + music + "&type=track"
     spotify = requests.get(API + "/search?" + query, headers={"Authorization": "Bearer " + get_token()})
 
     result = spotify.json()["tracks"]["items"]
@@ -74,15 +77,17 @@ def add_music_to_playlist(track):
 
 def run():
     print("Run at " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-    music = get_last_music()
-    track_id = get_track_id_spotify(music)
+    musics = get_last_music()
 
-    if track_id is not None:
-        if not track_already_exist(track_id):
-            add_music_to_playlist(track_id)
-    else:
-        log = open("log.txt", "a")
-        log.write("Can't find the music author: " + music.author + ", title: " + music.title)
+    for music in musics:
+        track_id = get_track_id_spotify(music)
+
+        if track_id is not None:
+            if not track_already_exist(track_id):
+                add_music_to_playlist(track_id)
+        else:
+            log = open("log.txt", "a")
+            log.write("Can't find the music " + music)
 
     time.sleep(60)
     run()
