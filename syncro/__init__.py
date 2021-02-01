@@ -89,7 +89,7 @@ def run():
             log = open("log.txt", "a")
             log.write("Can't find the music " + music)
 
-    time.sleep(60)
+    time.sleep(600)
     run()
 
 
