@@ -1,21 +1,19 @@
-from syncro.service.platform.Spotify import get_token, get_track_id_spotify, track_already_exist, add_music_to_playlist
-
-
 class BaseRadio:
-    def __init__(self, name, playlist):
+    def __init__(self, name, playlist, spotify):
         self.__playlist = playlist
         self.__name = name
+        self.__spotify = spotify
 
-    def execute(self, token, client_id, client_secret):
+    def execute(self):
         print(self.__name + " Is Running ..")
-        new_token = get_token(token, client_id, client_secret)
+
         for music in self.get_last_musics():
-            track_id = get_track_id_spotify(music, new_token)
+            track_id = self.__spotify.get_track_id_spotify(music[0], music[1])
 
             if track_id is not None:
-                if not track_already_exist(track_id, self.__playlist, 0, new_token):
-                    add_music_to_playlist(track_id, self.__playlist, new_token)
-                    print(self.__name + " Add : " + music)
+                if not self.__spotify.track_already_exist(track_id, self.__playlist, 0):
+                    self.__spotify.add_music_to_playlist(track_id, self.__playlist)
+                    print(self.__name + " Add : " + music[0] + " " + music[1])
                     # else:
                 # log = open("log.txt", "a")
                 # log.write("Can't find the music " + music + "\n")

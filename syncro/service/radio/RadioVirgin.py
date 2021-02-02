@@ -5,8 +5,8 @@ from syncro.service.radio.BaseRadio import BaseRadio
 
 
 class RadioVirgin(BaseRadio):
-    def __init__(self):
-        super().__init__("VIRGIN", "5AOn63dCvPO3UP8FO9bgQz")
+    def __init__(self, spotify):
+        super().__init__("VIRGIN", "5AOn63dCvPO3UP8FO9bgQz", spotify)
 
     def get_last_musics(self):
         page = requests.get("https://www.virginradio.fr/cetait-quoi-ce-titre/")
@@ -18,5 +18,5 @@ class RadioVirgin(BaseRadio):
         for music in html_music:
             title = music.find(class_="title").text
             author = music.find(class_="artist").text
-            musics.append(title + " " + author)
+            musics.append([title, author])
         return musics

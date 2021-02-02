@@ -2,6 +2,7 @@ import datetime
 import os
 import time
 
+from syncro.service.platform.Spotify import Spotify
 from syncro.service.radio.RadioNRJ import RadioNRJ
 from syncro.service.radio.RadioRTL2 import RadioRTL2
 from syncro.service.radio.RadioVirgin import RadioVirgin
@@ -17,13 +18,15 @@ print("ClientId     = " + CLIENT_ID)
 print("ClientSecret = " + CLIENT_SECRET)
 print(" ==================== ")
 
-radios = [RadioRTL2(), RadioVirgin(), RadioNRJ()]
+spotify = Spotify(TOKEN, CLIENT_ID, CLIENT_SECRET)
+
+radios = [RadioRTL2(spotify), RadioVirgin(spotify), RadioNRJ(spotify)]
 
 
 def run():
     print("Run at " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
     for radio in radios:
-        radio.execute(TOKEN, CLIENT_ID, CLIENT_SECRET)
+        radio.execute()
     print(" ==================== ")
     time.sleep(600)
     run()
