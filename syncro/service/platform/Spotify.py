@@ -28,8 +28,11 @@ def track_already_exist(track, playlist_id, i, token):
     request = "?market=FR&fields=items(track(uri)),total&offset=" + str(i)
     spotify = requests.get(API + "/v1/playlists/" + playlist_id + "/tracks" + request,
                            headers={"Authorization": "Bearer " + token})
-    exist = False
+
     result = spotify.json()
+
+    exist = False
+
     for item in result["items"]:
         if item["track"]["uri"] == track:
             exist = True
@@ -41,7 +44,6 @@ def track_already_exist(track, playlist_id, i, token):
 
 
 def add_music_to_playlist(track, playlist_id, token):
-    spotify = requests.post(API + "/v1/playlists/" + playlist_id + "/tracks?uris=" + track,
-                            headers={
-                                "Authorization": "Bearer " + token})
-    print(spotify.json())
+    result = requests.post(API + "/v1/playlists/" + playlist_id + "/tracks?uris=" + track,
+                           headers={"Authorization": "Bearer " + token})
+    # print(result.json())

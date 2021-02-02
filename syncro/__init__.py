@@ -17,19 +17,14 @@ print("ClientId     = " + CLIENT_ID)
 print("ClientSecret = " + CLIENT_SECRET)
 print(" ==================== ")
 
+radios = [RadioRTL2(), RadioVirgin(), RadioNRJ()]
+
 
 def run():
     print("Run at " + datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-
-    # print("Execute NRJ")
-    # RadioNRJ().execute(TOKEN, CLIENT_ID, CLIENT_SECRET)
-
-    print("Execute RTL2")
-    RadioRTL2().execute(TOKEN, CLIENT_ID, CLIENT_SECRET)
-
-    print("Execute Virgin")
-    RadioVirgin().execute(TOKEN, CLIENT_ID, CLIENT_SECRET)
-
+    for radio in radios:
+        radio.execute(TOKEN, CLIENT_ID, CLIENT_SECRET)
+    print(" ==================== ")
     time.sleep(600)
     run()
 

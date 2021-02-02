@@ -6,20 +6,18 @@ from syncro.service.radio.BaseRadio import BaseRadio
 
 class RadioNRJ(BaseRadio):
     def __init__(self):
-        super().__init__("35neAy6GCJXLamNQqBqgnU")
+        super().__init__("NRJ", "67Bq7QEyqEzvQ9IKqH7QVO")
 
     def get_last_musics(self):
-        page = requests.get("https://www.nrj.fr/chansons-diffusees")
+        page = requests.get("https://www.playlisteradio.com/nrj-radio")
         musics = []
 
         html_body = BeautifulSoup(page.content, "html.parser")
-        html_music = html_body.findAll(class_="cardPlaylist-body")
 
-        print(html_body)
+        html_music = html_body.findAll(class_="infos")
 
         for music in html_music:
-            title = music.find(class_="description").text
-            author = music.find(class_="heading4").text
+            title = music.find(class_="titre").text
+            author = music.find(class_="artiste").text
             musics.append(title + " " + author)
-
         return musics

@@ -6,7 +6,7 @@ from syncro.service.radio.BaseRadio import BaseRadio
 
 class RadioRTL2(BaseRadio):
     def __init__(self):
-        super().__init__("6iazs8VECddcN2EtJFDhVA")
+        super().__init__("RTL2", "6iazs8VECddcN2EtJFDhVA")
 
     def get_last_musics(self):
         page = requests.get("https://www.6play.fr/rtl2/quel-est-ce-titre")
