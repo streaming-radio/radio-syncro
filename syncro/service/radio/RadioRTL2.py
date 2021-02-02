@@ -14,7 +14,7 @@ class RadioRTL2(BaseRadio):
         """
         super().__init__("RTL2", "6iazs8VECddcN2EtJFDhVA", spotify)
 
-    def get_last_musics(self):
+    def get_last_musics(self) -> list[list]:
         """
         Parsing and get the last music at the radio
 

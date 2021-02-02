@@ -14,7 +14,7 @@ class RadioVirgin(BaseRadio):
         """
         super().__init__("VIRGIN", "5AOn63dCvPO3UP8FO9bgQz", spotify)
 
-    def get_last_musics(self):
+    def get_last_musics(self) -> list[list]:
         """
         Parsing and get the last music at the radio
 

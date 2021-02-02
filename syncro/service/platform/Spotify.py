@@ -14,33 +14,23 @@ class Spotify:
         :param client_id:  client id of the spotify app
         :param client_secret: client secret of the spotify app
         """
-        self.__token = self.__generate_token(token, client_id, client_secret)
+        self.__token = token
+        self.__client_id = client_id
+        self.__client_secret = client_secret
 
-    @staticmethod
-    def __generate_token(token: str, client_id: str, client_secret: str) -> str:
+    def __generate_token(self) -> str:
         """
         Generate a new token for spotify with the refresh token
 
-        :param token: the refresh token
-        :param client_id: client id of the spotify app
-        :param client_secret:  client secret of the spotify app
         :return: the new token
         """
         query = requests.post("https://accounts.spotify.com/api/token", {
-            "refresh_token": token,
+            "refresh_token": self.__token,
             "grant_type": "refresh_token",
-            "client_id": client_id,
-            "client_secret": client_secret
+            "client_id": self.__client_id,
+            "client_secret": self.__client_secret
         })
         return query.json()["access_token"]
-
-    def get_token(self) -> str:
-        """
-        Return the generated spotify token
-
-        :return: spotify token
-        """
-        return self.__token
 
     def get_track_id_spotify(self, title: str, artist: str) -> Optional[str]:
         """
@@ -51,7 +41,8 @@ class Spotify:
         :return: spotify track id
         """
         query = "q=" + title + " " + artist + "&type=track"
-        spotify = requests.get(API + "/v1/search?" + query, headers={"Authorization": "Bearer " + self.__token})
+        spotify = requests.get(API + "/v1/search?" + query,
+                               headers={"Authorization": "Bearer " + self.__generate_token()})
 
         result = spotify.json()["tracks"]["items"]
 
@@ -72,7 +63,7 @@ class Spotify:
         """
         request = "?market=FR&fields=items(track(uri)),total&offset=" + str(i)
         spotify = requests.get(API + "/v1/playlists/" + playlist_id + "/tracks" + request,
-                               headers={"Authorization": "Bearer " + self.__token})
+                               headers={"Authorization": "Bearer " + self.__generate_token()})
 
         result = spotify.json()
 
@@ -95,4 +86,4 @@ class Spotify:
         :param playlist_id: the spotify playlist id
         """
         requests.post(API + "/v1/playlists/" + playlist_id + "/tracks?uris=" + track,
-                      headers={"Authorization": "Bearer " + self.__token})
+                      headers={"Authorization": "Bearer " + self.__generate_token()})
