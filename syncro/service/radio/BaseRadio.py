@@ -1,10 +1,23 @@
+from syncro.service.platform.Spotify import Spotify
+
+
 class BaseRadio:
-    def __init__(self, name, playlist, spotify):
+    def __init__(self, name: str, playlist: str, spotify: Spotify):
+        """
+        Create a new instance of BaseRadio
+
+        :param name: the name of the radio
+        :param playlist: the spotify playlist id
+        :param spotify: the spotify client
+        """
         self.__playlist = playlist
         self.__name = name
         self.__spotify = spotify
 
-    def execute(self):
+    def execute(self) -> None:
+        """
+        Run the synchro for the radio
+        """
         print(self.__name + " Is Running ..")
 
         for music in self.get_last_musics():
